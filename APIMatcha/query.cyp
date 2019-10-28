@@ -28,3 +28,5 @@ LOAD CSV WITH HEADERS FROM 'file:///Interest.csv' AS line CREATE (:Interest {nam
 MATCH (a:Person {firstName: 'Jacqueline'})-[r1:LIKES]->(c:Interest)<-[r2:LIKES]-(b:Person {firstName: 'Sonny'}) OPTIONAL MATCH (a)-[d:POTENTIAL]-(b) WITH d, COUNT(r1) AS count SET d.matching = count
 
 MATCH (a:Person)-[r1:LIKES]->(c:Interest)<-[r2:LIKES]-(b:Person) OPTIONAL MATCH (a)-[d:POTENTIAL]-(b) WITH d, COUNT(r1) AS count SET d.matching = count
+
+MATCH (a:Person), (b:Person) WHERE NOT (b)-[:POTENTIAL]->(a) AND a.gender IN b.orientation AND b.gender IN a.orientation AND ID(a) <> ID(b) CREATE UNIQUE (a)-[:POTENTIAL]->(b)

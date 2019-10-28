@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Relationship.class.js                              :+:      :+:    :+:   */
+/*   neo4j.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mayday <mayday@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/16 04:57:15 by mayday            #+#    #+#             */
-/*   Updated: 2019/08/16 15:20:21 by mayday           ###   ########.fr       */
+/*   Created: 2019/10/25 08:24:23 by mayday            #+#    #+#             */
+/*   Updated: 2019/10/25 10:14:15 by mayday           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-class Relationship {
-	constructor(relationship = null) {
-		if (!relationship)
-			return ;
-		try {
-			this.id = relationship.identity.low;
-			this.startNode = relationship.start.low;
-			this.endNode = relationship.end.low;
-			this.type = relationship.type;
-			this.properties = relationship.properties;
+const neo4j = require('neo4j-driver').v1;
+
+/*
+function bddConnect()
+{
+	return 
+}
+*/
+
+class neo4jController {
+	start = () => new Promise((res, rej) => {
+		const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "240493"));
+		driver.onCompleted = () => {
+			res(driver);
 		}
-		catch (e) {
-			console.log(`${e.name}: ${e.message}`);
+		driver.onError = (e) => {
+			rej(e);
 		}
-	}
+	});
+	connect = this.start()
 }
 
-module.exports = Relationship;
+module.exports = new neo4jController();
