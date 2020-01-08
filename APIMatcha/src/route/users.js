@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   neo4j.js                                           :+:      :+:    :+:   */
+/*   users.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mayday <mayday@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/25 08:24:23 by mayday            #+#    #+#             */
-/*   Updated: 2019/10/25 10:14:15 by mayday           ###   ########.fr       */
+/*   Created: 2019/11/07 01:07:19 by mayday            #+#    #+#             */
+/*   Updated: 2020/01/08 16:16:03 by mayday           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-const neo4j = require('neo4j-driver').v1;
+import express from 'express';
+import { usersActions } from '../actions';
 
-/*
-function bddConnect()
-{
-	return 
-}
-*/
+const router = express.Router();
 
-class neo4jController {
-	start = () => new Promise((res, rej) => {
-		const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "240493"));
-		driver.onCompleted = () => {
-			res(driver);
-		}
-		driver.onError = (e) => {
-			rej(e);
-		}
-	});
-	connect = this.start()
-}
+router.post('/', usersActions.createUser);
+router.get('/:id', usersActions.getUserById);
+router.get('/', usersActions.getUsersByHint);
+router.delete('/:id', usersActions.deleteUser);
 
-module.exports = new neo4jController();
+export default router;
